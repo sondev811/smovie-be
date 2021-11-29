@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const getURL = require('../../services/service.js');
+const { getURL } = require('../../services/service.js');
 const urlConstant = require("../../constants/constant.js");
 
 router.get('/detail', async (req, res) => {
