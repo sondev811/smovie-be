@@ -151,13 +151,13 @@ router.get('/genres', async (req, res) => {
 
 router.get('/search', async (req, res) => {
     try {
-        if (!req || !req.query || !req.query.key || !req.query.page) {
-            const error = new Error('Missing key search or page');
+        if (!req || !req.query || !req.query.query || !req.query.page) {
+            const error = new Error('Missing query search or page');
             error.code = '403';
             throw error;
         }
         const params = {
-            query: req.query.key,
+            query: req.query.query,
             page: req.query.page
         };
         const api = await getURL(urlConstant.TV.SEARCH, params);

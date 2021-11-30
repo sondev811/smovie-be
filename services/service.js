@@ -29,7 +29,6 @@ const handleParams = (param) => {
     keys.forEach((item, index) => {
         params.append(item, values[index]);
     });
-    console.log(params);
     return params;
 }
 
