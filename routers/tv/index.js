@@ -32,101 +32,16 @@ router.get('/detail', async (req, res) => {
     }
 });
 
-router.get('/popular', async (req, res) => {
+router.get('/list', async (req, res) => {
     try {
-        if (!req || !req.query || !req.query.page) {
-            const error = new Error('Missing page');
+        if (!req || !req.query || !req.query.page || !req.query.type) {
+            const error = new Error('Missing page or type');
             error.code = '403';
             throw error;
         }
-        const api = await getURL(urlConstant.TV.POPULAR);
-        if (!api || !api.body) {
-            const error = new Error('Server error');
-            error.code = '500';
-            throw error;
-        }
-        if (api.body.success === false) {
-            const error = new Error(api.body.status_message);
-            error.code = '404';
-            throw error;
-        }
-        const data = api.body;
-        res.status(200).json(data);
-    } catch (err) {
-        if (err.code) {
-            res.status(err.code).json({error: err.message});           
-        } else {
-            res.status(500).json({error: err.message});         
-        }        
-    }
-});
-
-router.get('/top_rated', async (req, res) => {
-    try {
-        if (!req || !req.query || !req.query.page) {
-            const error = new Error('Missing page');
-            error.code = '403';
-            throw error;
-        }
-        const api = await getURL(urlConstant.TV.TOP_RATE);
-        if (!api || !api.body) {
-            const error = new Error('Server error');
-            error.code = '500';
-            throw error;
-        }
-        if (api.body.success === false) {
-            const error = new Error(api.body.status_message);
-            error.code = '404';
-            throw error;
-        }
-        const data = api.body;
-        res.status(200).json(data);
-    } catch (err) {
-        if (err.code) {
-            res.status(err.code).json({error: err.message});           
-        } else {
-            res.status(500).json({error: err.message});         
-        }        
-    }
-});
-
-router.get('/on_the_air', async (req, res) => {
-    try {
-        if (!req || !req.query || !req.query.page) {
-            const error = new Error('Missing page');
-            error.code = '403';
-            throw error;
-        }
-        const api = await getURL(urlConstant.TV.ON_THE_AIR);
-        if (!api || !api.body) {
-            const error = new Error('Server error');
-            error.code = '500';
-            throw error;
-        }
-        if (api.body.success === false) {
-            const error = new Error(api.body.status_message);
-            error.code = '404';
-            throw error;
-        }
-        const data = api.body;
-        res.status(200).json(data);
-    } catch (err) {
-        if (err.code) {
-            res.status(err.code).json({error: err.message});           
-        } else {
-            res.status(500).json({error: err.message});         
-        }        
-    }
-});
-
-router.get('/airing_today', async (req, res) => {
-    try {
-        if (!req || !req.query || !req.query.page) {
-            const error = new Error('Missing page');
-            error.code = '403';
-            throw error;
-        }
-        const api = await getURL(urlConstant.TV.AIRING_TODAY);
+        const type = urlConstant.TV[req.query.type.toUpperCase()];
+        const url = type ? type : urlConstant.TV.POPULAR;
+        const api = await getURL(url, { page: req.query.page});
         if (!api || !api.body) {
             const error = new Error('Server error');
             error.code = '500';
